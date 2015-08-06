@@ -11,23 +11,26 @@ This uses the ping tool.
 # http://magazine.redhat.com/2008/02/07/python-for-bash-scripters-a-well-kept-secret/
 
 import os
+import re
 
 
-def pingTest(dest_ip):
+def pingTest(dest):
     '''
-    Runs a ping test to the dest_ip. Returns the raw string of the
+    Runs a ping test to the dest. Returns the raw string of the
     result. (the stdout output from the command line).
     '''
     # http://stackoverflow.com/questions/2953462/pinging-servers-in-python
-    raw_result = os.system("ping -c 1 " + dest_ip)
-    print raw_result
-    return 'Fin'
+    raw_result = os.system("ping -qc 10 " + dest)
+    print 'pingTest on %s completed.\n' % dest
+    return raw_result
 
 
 def processPingTest(raw_result):
     '''
     Process the result of a ping test to extract the rtt of each ping.
     '''
+    ip_pattern = re.compile(r'(\d\.\d\.\d\.\d)')
+    results_pattern = re.compile(r'')
     return 'Fin'
 
 
@@ -49,13 +52,15 @@ if __name__ == '__main__':
     '''
     List of the IP addresses of the other nodes in the network.
     '''
-    IP_LIST = ['8.8.8.8', 'www.facebook.com']
+    IP_last_num_list = [200, 201, 7, 11, 5, 8, 9, 101]
+    IP_LIST = ['10.1.1.%d' % last_num for last_num in IP_last_num_list]
 
     '''
-    List of lists of results of ping tests to different IPs.
+    List of dictionaries of results of ping tests to different IPs.
     '''
     RESULTS = []
 
+    print '----------- running tests ------------'
     for ip in IP_LIST:
         test_result_raw = pingTest(ip)
         test_result_processed = processPingTest(test_result_raw)
