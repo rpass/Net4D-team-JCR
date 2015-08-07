@@ -1,3 +1,4 @@
+#!/bin/sh
 # knowledge is power 
 clear
 # date +%FORMAT
